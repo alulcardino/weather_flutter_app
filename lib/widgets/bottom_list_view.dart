@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:weather_flutter_app/widgets/forecast_card.dart';
 
-import '../models/weather_forecast_daily.dart';
+import '../features/domain/entities/weather_forecast_entity.dart';
 
 class BottomListView extends StatelessWidget {
-  final AsyncSnapshot<WeatherForecast> snapshot;
-  BottomListView({required this.snapshot});
+  final WeatherForecastEntity weatherForecast;
+
+  const BottomListView({super.key, required this.weatherForecast});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +29,12 @@ class BottomListView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2.7,
                 height: 160,
                 color: Colors.black87,
-                child: forecastCart(snapshot, index),
+                child: forecastCart(weatherForecast, index),
               ),
               separatorBuilder: (context, index) => const SizedBox(
                 width: 8,
               ),
-              itemCount: snapshot.data!.list!.length,
+              itemCount: weatherForecast.list!.length,
             ))
       ],
     );

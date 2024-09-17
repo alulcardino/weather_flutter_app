@@ -1,17 +1,17 @@
-class Coord {
+import 'package:equatable/equatable.dart';
+
+import '../../data/dto/coord_dto.dart';
+
+class CoordEntity extends Equatable {
   final double? lon;
   final double? lat;
 
-  Coord({this.lon, this.lat});
+  CoordEntity({this.lon, this.lat});
 
-  Coord.fromDTO(CoordDTO dto)
+  CoordEntity.fromDTO(CoordDTO dto)
       : lon = dto.lon,
         lat = dto.lat;
 
-  CoordDTO toDTO() {
-    return CoordDTO(
-      lon: lon,
-      lat: lat,
-    );
-  }
+  @override
+  List<Object?> get props => [lon, lat];
 }

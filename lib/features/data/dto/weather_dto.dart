@@ -1,7 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:typed_json/typed_json.dart';
 
-
-class WeatherDTO {
+class WeatherDTO extends Equatable {
   final int id;
   final String main;
   final String description;
@@ -23,12 +23,6 @@ class WeatherDTO {
     );
   }
 
-  Json toJson() {
-    final json = Json.object();
-    json['id'] = Json(id);
-    json['main'] = Json(main);
-    json['description'] = Json(description);
-    json['icon'] = Json(icon);
-    return json;
-  }
+  @override
+  List<Object?> get props => [id, main, description, icon];
 }

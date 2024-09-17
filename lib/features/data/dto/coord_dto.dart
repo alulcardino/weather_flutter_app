@@ -1,4 +1,7 @@
-class CoordDTO {
+import 'package:equatable/equatable.dart';
+import 'package:typed_json/typed_json.dart';
+
+class CoordDTO extends Equatable {
   final double? lon;
   final double? lat;
 
@@ -6,15 +9,11 @@ class CoordDTO {
 
   factory CoordDTO.fromJson(Json json) {
     return CoordDTO(
-      lon: json['lon']?.doubleValue,
-      lat: json['lat']?.doubleValue,
+      lon: json['lon'].doubleValue,
+      lat: json['lat'].doubleValue,
     );
   }
 
-  Json toJson() {
-    final json = Json.object();
-    if (lon != null) json['lon'] = Json(lon!);
-    if (lat != null) json['lat'] = Json(lat!);
-    return json;
-  }
+  @override
+  List<Object?> get props => [lon, lat];
 }

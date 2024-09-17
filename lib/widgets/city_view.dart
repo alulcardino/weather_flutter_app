@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/models/weather_forecast_daily.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
 import 'package:weather_flutter_app/utils/forecast_util.dart';
 
 class CityView extends StatelessWidget {
-  final AsyncSnapshot<WeatherForecast> snapshot;
+  final WeatherForecastEntity weatherForecast;
 
-  const CityView({super.key, required this.snapshot});
+  const CityView({super.key, required this.weatherForecast});
 
   @override
   Widget build(BuildContext context) {
-    String city = snapshot.data!.city.name;
-    String country = snapshot.data!.city.country;
+    String city = weatherForecast.city.name;
+    String country = weatherForecast.city.country;
     var formattedDate =
-        DateTime.fromMillisecondsSinceEpoch(snapshot.data!.list![0].dt * 1000);
+        DateTime.fromMillisecondsSinceEpoch(weatherForecast.list![0].dt * 1000);
 
     return Column(
       children: [

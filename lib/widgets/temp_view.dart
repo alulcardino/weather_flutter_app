@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/models/weather_forecast_daily.dart';
+import '../features/domain/entities/weather_forecast_entity.dart';
 
 class TempView extends StatelessWidget {
-  final AsyncSnapshot<WeatherForecast> snapshot;
-  const TempView({required this.snapshot});
+  final WeatherForecastEntity weatherForecast;
+
+  const TempView({super.key, required this.weatherForecast});
 
   @override
   Widget build(BuildContext context) {
-    var forecastList = snapshot.data?.list;
+    var forecastList = weatherForecast.list;
     var icon = forecastList?[0].getIconUrl();
     var temp = forecastList?[0].temp.day.toStringAsFixed(0);
     var description = forecastList?[0].weather[0].description;
@@ -32,7 +33,7 @@ class TempView extends StatelessWidget {
               ),
               Text(
                 "$description",
-                style: TextStyle(fontSize: 18.0, color: Colors.black87),
+                style: const TextStyle(fontSize: 18.0, color: Colors.black87),
               )
             ],
           )

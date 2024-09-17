@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/screens/city_screen.dart';
+import 'package:weather_flutter_app/pages/city_page.dart';
 import 'package:weather_flutter_app/widgets/bottom_list_view.dart';
 import 'package:weather_flutter_app/widgets/city_view.dart';
 import 'package:weather_flutter_app/widgets/detail_view.dart';
 import 'package:weather_flutter_app/widgets/temp_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
 
-import '../api/weather_api.dart';
-import '../models/weather_forecast_daily.dart';
+import '../features/domain/entities/weather_forecast_entity.dart';
+import '../features/presentatiom/qubit/weather/weather_event.dart';
+import '../features/presentatiom/qubit/weather/weather_qubit.dart';
+import '../features/presentatiom/qubit/weather/weather_state.dart';
 
 class WeatherForecastScreen extends StatefulWidget {
-  final WeatherForecast? locationWeather;
-  const WeatherForecastScreen({Key? key, this.locationWeather})
+  final WeatherForecastEntity
+      locationWeather; // Получаем данные с предыдущего экрана
+
+  const WeatherForecastScreen({Key? key, required this.locationWeather})
       : super(key: key);
 
   @override
@@ -18,16 +24,13 @@ class WeatherForecastScreen extends StatefulWidget {
 }
 
 class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
-  late Future<WeatherForecast> forecastObject;
   late String _cityName;
 
   @override
   void initState() {
     super.initState();
-
-    if (widget.locationWeather != null) {
-      forecastObject = Future.value(widget.locationWeather);
-    }
+    BlocProvider.of<WeatherBloc>(context)
+        .add(FetchWeatherByLocation(widget.locationWeather));
   }
 
   @override
@@ -44,17 +47,13 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
         leading: IconButton(
           icon: const Icon(Icons.my_location, color: Colors.white),
           onPressed: () {
-            setState(() {
-              forecastObject = WeatherApi().fetchWeatherForecast();
-            });
+            BlocProvider.of<WeatherBloc>(context)
+                .add(FetchWeatherByLocation(widget.locationWeather));
           },
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(
-              Icons.location_city,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.location_city, color: Colors.white),
             onPressed: () async {
               var tappedName = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) {
@@ -63,44 +62,49 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
               if (tappedName != null) {
                 setState(() {
                   _cityName = tappedName;
-                  forecastObject = WeatherApi()
-                      .fetchWeatherForecast(city: _cityName, isCity: true);
+                  BlocProvider.of<WeatherBloc>(context)
+                      .add(FetchWeather(_cityName));
                 });
               }
             },
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          FutureBuilder<WeatherForecast>(
-            future: forecastObject,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: <Widget>[
-                    const SizedBox(height: 50.0),
-                    CityView(snapshot: snapshot),
-                    const SizedBox(height: 50.0),
-                    TempView(snapshot: snapshot),
-                    const SizedBox(height: 50.0),
-                    DetailView(snapshot: snapshot),
-                    const SizedBox(height: 50.0),
-                    BottomListView(snapshot: snapshot),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: Text(
-                    'City not found\nPlease, enter correct city',
-                    style: TextStyle(fontSize: 25),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+      body: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          if (state is WeatherLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is WeatherLoaded) {
+            return Column(
+              children: <Widget>[
+                const SizedBox(height: 50.0),
+                CityView(weatherForecast: state.weatherForecast),
+                const SizedBox(height: 50.0),
+                TempView(weatherForecast: state.weatherForecast),
+                const SizedBox(height: 50.0),
+                DetailView(weatherForecast: state.weatherForecast),
+                const SizedBox(height: 50.0),
+                BottomListView(weatherForecast: state.weatherForecast),
+              ],
+            );
+          } else if (state is WeatherError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                'City not found\nPlease, enter correct city',
+                style: TextStyle(fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+        },
       ),
     );
   }

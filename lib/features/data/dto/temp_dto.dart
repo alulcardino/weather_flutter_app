@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:typed_json/typed_json.dart';
 
-class TempDTO {
+class TempDTO extends Equatable {
   final double day;
   final double min;
   final double max;
@@ -28,14 +29,6 @@ class TempDTO {
     );
   }
 
-  Json toJson() {
-    final json = Json.object();
-    json['day'] = Json(day);
-    json['min'] = Json(min);
-    json['max'] = Json(max);
-    json['night'] = Json(night);
-    json['eve'] = Json(eve);
-    json['morn'] = Json(morn);
-    return json;
-  }
+  @override
+  List<Object?> get props => [day, min, max, night, eve, morn];
 }

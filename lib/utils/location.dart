@@ -6,15 +6,14 @@ class Location {
   late double longitude;
 
   Future<void> getCurrentLocation() async {
-    var status = await Permission.location.status;
-    if (!status.isGranted) {
-      if (await Permission.location.request().isGranted) {
-      } else {
-        throw Exception("Location permission denied");
-      }
-    }
-
     try {
+      var status = await Permission.location.status;
+      if (!status.isGranted) {
+        if (!await Permission.location.request().isGranted) {
+          throw Exception("Location permission denied");
+        }
+      }
+
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low,
       );

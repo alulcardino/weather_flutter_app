@@ -1,36 +1,27 @@
-class City {
+import 'package:equatable/equatable.dart';
+import 'package:weather_flutter_app/features/domain/entities/coord_entity.dart';
+
+import '../../data/dto/city_dto.dart';
+
+class CityEntity extends Equatable {
   final int id;
   final String name;
-  final Coord coord;
+  final CoordEntity coord;
   final String country;
-  final int population;
-  final int timezone;
 
-  City({
+  CityEntity({
     required this.id,
     required this.name,
     required this.coord,
     required this.country,
-    required this.population,
-    required this.timezone,
   });
 
-  City.fromDTO(CityDTO dto)
+  CityEntity.fromDTO(CityDTO dto)
       : id = dto.id,
         name = dto.name,
-        coord = Coord.fromDTO(dto.coord),
-        country = dto.country,
-        population = dto.population,
-        timezone = dto.timezone;
+        coord = CoordEntity.fromDTO(dto.coord),
+        country = dto.country;
 
-  CityDTO toDTO() {
-    return CityDTO(
-      id: id,
-      name: name,
-      coord: coord.toDTO(),
-      country: country,
-      population: population,
-      timezone: timezone,
-    );
-  }
+  @override
+  List<Object?> get props => [id, name, coord, country];
 }

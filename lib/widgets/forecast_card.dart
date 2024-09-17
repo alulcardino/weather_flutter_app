@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:weather_flutter_app/utils/forecast_util.dart';
 
-Widget forecastCart(AsyncSnapshot snapshot, int index) {
-  var forecastList = snapshot.data?.list;
+import '../features/domain/entities/weather_forecast_entity.dart';
 
-  var date = DateTime.fromMillisecondsSinceEpoch(forecastList[index].dt * 1000);
+Widget forecastCart(WeatherForecastEntity weatherForecast, int index) {
+  var forecastList = weatherForecast.list;
+
+  var date =
+      DateTime.fromMillisecondsSinceEpoch(forecastList![index].dt * 1000);
   var fullDate = Util.getFormattedDate(date);
   var dayOfWeek = fullDate.split(',')[0];
   var tempMin = forecastList[index].temp.min.toStringAsFixed(0);
   var icon = forecastList[index].getIconUrl();
+
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,10 +33,10 @@ Widget forecastCart(AsyncSnapshot snapshot, int index) {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "$tempMin°C",
-                  style: TextStyle(fontSize: 26.0, color: Colors.white),
+                  style: const TextStyle(fontSize: 26.0, color: Colors.white),
                 ),
               )
             ],

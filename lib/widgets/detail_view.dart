@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weather_flutter_app/models/weather_forecast_daily.dart';
 import 'package:weather_flutter_app/utils/forecast_util.dart';
 
+import '../features/domain/entities/weather_forecast_entity.dart';
+
 class DetailView extends StatelessWidget {
-  final AsyncSnapshot<WeatherForecast> snapshot;
-  const DetailView({required this.snapshot});
+  final WeatherForecastEntity weatherForecast;
+
+  const DetailView({super.key, required this.weatherForecast});
 
   @override
   Widget build(BuildContext context) {
-    var forecastList = snapshot.data?.list;
+    var forecastList = weatherForecast.list;
 
     var pressure = forecastList![0].pressure * 0.750062;
     var humidity = forecastList[0].humidity;
