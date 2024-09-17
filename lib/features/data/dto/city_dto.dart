@@ -10,7 +10,7 @@ class CityDTO extends Equatable {
   final int population;
   final int timezone;
 
-  CityDTO({
+  const CityDTO({
     required this.id,
     required this.name,
     required this.coord,

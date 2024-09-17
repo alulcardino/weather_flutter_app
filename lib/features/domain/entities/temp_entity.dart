@@ -7,7 +7,7 @@ class TempEntity extends Equatable {
   final double min;
   final double max;
 
-  TempEntity({
+  const TempEntity({
     required this.day,
     required this.night,
     required this.min,

@@ -6,7 +6,7 @@ class CoordEntity extends Equatable {
   final double? lon;
   final double? lat;
 
-  CoordEntity({this.lon, this.lat});
+  const CoordEntity({this.lon, this.lat});
 
   CoordEntity.fromDTO(CoordDTO dto)
       : lon = dto.lon,

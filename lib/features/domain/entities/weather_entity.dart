@@ -8,7 +8,7 @@ class WeatherEntity extends Equatable {
   final String description;
   final String icon;
 
-  WeatherEntity({
+  const WeatherEntity({
     required this.id,
     required this.main,
     required this.description,

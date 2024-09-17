@@ -7,8 +7,8 @@ import '../features/domain/usecases/get_weather_forecast_by_city_use_case.dart';
 import '../features/domain/usecases/get_weather_forecast_by_location_use_case.dart';
 import '../features/presentatiom/qubit/location/location_qubit.dart';
 import '../features/presentatiom/qubit/weather/weather_qubit.dart';
-import '../utils/constants.dart';
-import '../utils/location.dart';
+import '../features/presentatiom/utils/constants.dart';
+import '../features/presentatiom/utils/location.dart';
 
 class DependencyInjection {
   static final KiwiContainer container = KiwiContainer();
@@ -46,7 +46,6 @@ class DependencyInjection {
       (c) => Location(),
     );
 
-    // Register BLoCs
     container.registerFactory<LocationBloc>(
       (c) => LocationBloc(c.resolve<GetWeatherForecastByLocation>()),
     );

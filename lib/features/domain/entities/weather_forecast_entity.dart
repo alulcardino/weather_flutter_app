@@ -11,7 +11,7 @@ class WeatherForecastEntity extends Equatable {
   final int cnt;
   final List<WeatherListEntity>? list;
 
-  WeatherForecastEntity({
+  const WeatherForecastEntity({
     required this.city,
     required this.cod,
     required this.message,

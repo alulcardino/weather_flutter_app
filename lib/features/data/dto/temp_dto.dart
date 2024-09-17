@@ -9,7 +9,7 @@ class TempDTO extends Equatable {
   final double eve;
   final double morn;
 
-  TempDTO({
+  const TempDTO({
     required this.day,
     required this.min,
     required this.max,
@@ -20,13 +20,18 @@ class TempDTO extends Equatable {
 
   factory TempDTO.fromJson(Json json) {
     return TempDTO(
-      day: json['day'].doubleOrException,
-      min: json['min'].doubleOrException,
-      max: json['max'].doubleOrException,
-      night: json['night'].doubleOrException,
-      eve: json['eve'].doubleOrException,
-      morn: json['morn'].doubleOrException,
+      day: _parseToDouble(json['day']),
+      min: _parseToDouble(json['min']),
+      max: _parseToDouble(json['max']),
+      night: _parseToDouble(json['night']),
+      eve: _parseToDouble(json['eve']),
+      morn: _parseToDouble(json['morn']),
     );
+  }
+
+  static double _parseToDouble(Json json) {
+    final num value = json.numOrException;
+    return value.toDouble();
   }
 
   @override

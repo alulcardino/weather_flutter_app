@@ -7,7 +7,7 @@ class FeelsLikeDTO extends Equatable {
   final double eve;
   final double morn;
 
-  FeelsLikeDTO({
+  const FeelsLikeDTO({
     required this.day,
     required this.night,
     required this.eve,
@@ -16,11 +16,16 @@ class FeelsLikeDTO extends Equatable {
 
   factory FeelsLikeDTO.fromJson(Json json) {
     return FeelsLikeDTO(
-      day: json['day'].doubleOrException,
-      night: json['night'].doubleOrException,
-      eve: json['eve'].doubleOrException,
-      morn: json['morn'].doubleOrException,
+      day: _parseToDouble(json['day']),
+      night: _parseToDouble(json['night']),
+      eve: _parseToDouble(json['eve']),
+      morn: _parseToDouble(json['morn']),
     );
+  }
+
+  static double _parseToDouble(Json json) {
+    final num value = json.numOrException;
+    return value.toDouble();
   }
 
   @override

@@ -15,12 +15,8 @@ class WeatherRepositoryImpl implements WeatherRepository {
       String city) async {
     try {
       final weather = await remoteDataSource.getWeatherForecastByCity(city);
-      print(
-          'Weather data for city $city: $weather'); // Логирование успешного результата
       return Right(weather);
     } catch (e) {
-      print(
-          'Failed to get weather data for city $city: $e'); // Логирование ошибки
       return Left(ServerFailure());
     }
   }
@@ -30,11 +26,8 @@ class WeatherRepositoryImpl implements WeatherRepository {
       getWeatherForecastByLocation() async {
     try {
       final weather = await remoteDataSource.getWeatherForecastByLocation();
-      print(
-          'Weather data by location: $weather'); // Логирование успешного результата
       return Right(weather);
     } catch (e) {
-      print('Failed to get weather data by location: $e'); // Логирование ошибки
       return Left(ServerFailure());
     }
   }

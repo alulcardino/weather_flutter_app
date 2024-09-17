@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:weather_flutter_app/features/domain/entities/weather_entity.dart';
 
-import '../../../utils/constants.dart';
+import '../../presentatiom/utils/constants.dart';
 import '../../data/dto/weather_list_dto.dart';
 import 'temp_entity.dart';
 
@@ -15,7 +15,7 @@ class WeatherListEntity extends Equatable {
   final int deg;
   final int clouds;
 
-  WeatherListEntity({
+  const WeatherListEntity({
     required this.dt,
     required this.temp,
     required this.pressure,

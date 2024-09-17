@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/utils/forecast_util.dart';
+import 'package:weather_flutter_app/features/presentatiom/utils/formatter.dart';
 
-import '../features/domain/entities/weather_forecast_entity.dart';
+import '../../domain/entities/weather_forecast_entity.dart';
 
 Widget forecastCart(WeatherForecastEntity weatherForecast, int index) {
-  var forecastList = weatherForecast.list;
-
-  var date =
-      DateTime.fromMillisecondsSinceEpoch(forecastList![index].dt * 1000);
-  var fullDate = Util.getFormattedDate(date);
-  var dayOfWeek = fullDate.split(',')[0];
-  var tempMin = forecastList[index].temp.min.toStringAsFixed(0);
+  var forecastList = weatherForecast.list!;
+  var date = DateTime.fromMillisecondsSinceEpoch(forecastList[index].dt * 1000);
+  var fullDate = Formatter.getFormattedDate(date);
+  var dayOfWeek = Formatter.getDayOfWeek(fullDate);
+  var tempMin = Formatter.formatTemperature(forecastList[index].temp.min);
   var icon = forecastList[index].getIconUrl();
 
   return Column(
@@ -21,10 +19,7 @@ Widget forecastCart(WeatherForecastEntity weatherForecast, int index) {
         padding: const EdgeInsets.all(8.0),
         child: Text(
           dayOfWeek,
-          style: const TextStyle(
-            fontSize: 25,
-            color: Colors.white,
-          ),
+          style: const TextStyle(fontSize: 25, color: Colors.white),
         ),
       ),
       Row(
@@ -35,7 +30,7 @@ Widget forecastCart(WeatherForecastEntity weatherForecast, int index) {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "$tempMin°C",
+                  tempMin,
                   style: const TextStyle(fontSize: 26.0, color: Colors.white),
                 ),
               )
@@ -47,7 +42,7 @@ Widget forecastCart(WeatherForecastEntity weatherForecast, int index) {
             color: Colors.white,
           )
         ],
-      )
+      ),
     ],
   );
 }

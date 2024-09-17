@@ -9,7 +9,7 @@ class CityEntity extends Equatable {
   final CoordEntity coord;
   final String country;
 
-  CityEntity({
+  const CityEntity({
     required this.id,
     required this.name,
     required this.coord,

@@ -10,7 +10,7 @@ class WeatherForecastDTO extends Equatable {
   final int cnt;
   final List<WeatherListDTO>? list;
 
-  WeatherForecastDTO({
+  const WeatherForecastDTO({
     required this.city,
     required this.cod,
     required this.message,
@@ -19,7 +19,6 @@ class WeatherForecastDTO extends Equatable {
   });
 
   factory WeatherForecastDTO.fromJson(Json json) {
-    print("Decoding JSO123N: $json");
     return WeatherForecastDTO(
       city: CityDTO.fromJson(json['city']),
       cod: json['cod'].stringOrException,
@@ -35,3 +34,9 @@ class WeatherForecastDTO extends Equatable {
   @override
   List<Object?> get props => [city, cod, message, cnt, list];
 }
+
+
+// json['list']
+//           .list
+//           .map((item) => WeatherListDTO.fromJson(item))
+//           .toList(),

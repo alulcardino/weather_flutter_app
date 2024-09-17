@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class Util {
-  static String getFormattedDate(DateTime dateTime) {
-    return DateFormat("EEE, MMM d, y").format(dateTime);
-  }
+class ForecastItem extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String units;
 
-  static getItem(IconData icon, int value, String units) {
+  const ForecastItem({
+    super.key,
+    required this.icon,
+    required this.value,
+    required this.units,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Icon(
@@ -16,7 +23,7 @@ class Util {
         ),
         const SizedBox(height: 10.0),
         Text(
-          "$value",
+          value,
           style: const TextStyle(fontSize: 20, color: Colors.black87),
         ),
         const SizedBox(height: 10.0),

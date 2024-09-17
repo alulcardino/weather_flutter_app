@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CityScreen extends StatefulWidget {
-  const CityScreen({Key? key}) : super(key: key);
+class CityPage extends StatefulWidget {
+  const CityPage({super.key});
 
   @override
-  _CityScreenState createState() => _CityScreenState();
+  _CityPageState createState() => _CityPageState();
 }
 
-class _CityScreenState extends State<CityScreen> {
+class _CityPageState extends State<CityPage> {
   late String cityName;
 
   @override

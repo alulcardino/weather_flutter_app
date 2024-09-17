@@ -18,7 +18,7 @@ class WeatherListDTO extends Equatable {
   final int deg;
   final int clouds;
 
-  WeatherListDTO({
+  const WeatherListDTO({
     required this.dt,
     required this.sunrise,
     required this.sunset,
@@ -41,10 +41,10 @@ class WeatherListDTO extends Equatable {
       feelsLike: FeelsLikeDTO.fromJson(json['feels_like']),
       pressure: json['pressure'].intOrException,
       humidity: json['humidity'].intOrException,
-      weather: (json['weather'] as List)
+      weather: (json['weather'].list)
           .map((item) => WeatherDTO.fromJson(item))
           .toList(),
-      speed: json['speed'].doubleOrException,
+      speed: _parseToDouble(json['speed']),
       deg: json['deg'].intOrException,
       clouds: json['clouds'].intOrException,
     );
@@ -64,4 +64,9 @@ class WeatherListDTO extends Equatable {
         deg,
         clouds
       ];
+
+  static double _parseToDouble(Json json) {
+    final num value = json.numOrException;
+    return value.toDouble();
+  }
 }

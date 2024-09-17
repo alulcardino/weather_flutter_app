@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/pages/location_page.dart';
+import 'package:weather_flutter_app/features/presentatiom/pages/location_page.dart';
 import 'package:provider/provider.dart';
-import 'di/di.dart';
-import 'features/presentatiom/qubit/location/location_qubit.dart';
-import 'features/presentatiom/qubit/weather/weather_qubit.dart';
+import '../../di/di.dart';
+import 'qubit/location/location_qubit.dart';
+import 'qubit/weather/weather_qubit.dart';
 
 void main() {
   DependencyInjection.setup();
@@ -11,22 +11,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(
+        Provider<LocationBloc>(
           create: (_) => DependencyInjection.container.resolve<LocationBloc>(),
         ),
-        Provider(
+        Provider<WeatherBloc>(
           create: (_) => DependencyInjection.container.resolve<WeatherBloc>(),
         ),
-        // Другие провайдеры, если есть
       ],
       child: const MaterialApp(
-        home: LocationScreen(),
+        home: LocationPage(),
       ),
     );
   }
