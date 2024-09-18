@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
-import 'package:weather_flutter_app/features/presentation/pages/city_page.dart';
+import 'package:weather_flutter_app/features/presentation/navigation/naviagtion_coordinator.dart';
 import 'package:weather_flutter_app/features/presentation/qubit/weather/weather_cubit.dart';
 import 'package:weather_flutter_app/features/presentation/qubit/weather/weather_state.dart';
 import 'package:weather_flutter_app/features/presentation/widgets/bottom_list_view.dart';
@@ -53,6 +53,8 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   }
 
   AppBar _buildAppBar() {
+    final navigationCoordinator = NavigationCoordinator();
+
     return AppBar(
       backgroundColor: Colors.black87,
       title: const Text(
@@ -71,10 +73,8 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
         IconButton(
           icon: const Icon(Icons.location_city, color: Colors.white),
           onPressed: () async {
-            var tappedName = await Navigator.push<String>(
-              context,
-              MaterialPageRoute(builder: (context) => const CityPage()),
-            );
+            var tappedName = await navigationCoordinator.navigateToCityScreen(context);
+
             if (tappedName != null) {
               setState(() {
                 _cityName = tappedName;
@@ -92,7 +92,6 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   }
 
   Widget _buildWeatherContent(WeatherForecastEntity weatherForecast) {
-    // Use the callback if it is provided
     if (widget.onShowOtherScreen != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.onShowOtherScreen!(weatherForecast);

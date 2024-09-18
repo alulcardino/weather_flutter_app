@@ -62,5 +62,6 @@ class DependencyInjection {
     container.registerFactory<ForceDoubleJsonAdapter>(
       (c) => ForceDoubleJsonAdapter(),
     );
+
   }
 }

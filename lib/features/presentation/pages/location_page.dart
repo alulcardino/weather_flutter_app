@@ -13,12 +13,9 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  late NavigationCoordinator _navigationCoordinator;
-
   @override
   void initState() {
     super.initState();
-    _navigationCoordinator = NavigationCoordinator(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LocationCubit>().loadLocationData();
     });
@@ -32,9 +29,11 @@ class _LocationPageState extends State<LocationPage> {
           if (state is LocationLoadInProgress) {
             return _buildLoading();
           } else if (state is LocationLoadSuccess) {
+            // Perform navigation directly in the builder
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              _navigationCoordinator
-                  .navigateToWeatherForecastScreen(state.weatherForecast);
+              final navigationCoordinator = NavigationCoordinator();
+              navigationCoordinator
+                  .navigateToWeatherForecastScreen(context, state.weatherForecast);
             });
             return _buildEmpty();
           } else if (state is LocationLoadingFailure) {

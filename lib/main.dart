@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           create: (context) => DependencyInjection.container.resolve<WeatherCubit>(),
         ),
         Provider<NavigationCoordinator>(
-          create: (context) => NavigationCoordinator(Navigator.of(context).context),
+          create: (context) => NavigationCoordinator(context),
         ),
       ],
       child: const MaterialApp(
