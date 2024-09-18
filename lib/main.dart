@@ -20,13 +20,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         BlocProvider<LocationCubit>(
-          create: (context) => DependencyInjection.container.resolve<LocationCubit>(),
+          create: (context) =>
+              DependencyInjection.container.resolve<LocationCubit>(),
         ),
         BlocProvider<WeatherCubit>(
-          create: (context) => DependencyInjection.container.resolve<WeatherCubit>(),
-        ),
-        Provider<NavigationCoordinator>(
-          create: (context) => NavigationCoordinator(context),
+          create: (context) =>
+              DependencyInjection.container.resolve<WeatherCubit>(),
         ),
       ],
       child: const MaterialApp(
