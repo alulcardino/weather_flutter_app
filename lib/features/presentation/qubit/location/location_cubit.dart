@@ -7,8 +7,7 @@ import 'package:weather_flutter_app/features/presentation/qubit/location/locatio
 class LocationCubit extends Cubit<LocationState> {
   final GetWeatherForecastByLocation getWeatherForecast;
 
-  LocationCubit(this.getWeatherForecast) : super(LocationInitial()) {
-  }
+  LocationCubit(this.getWeatherForecast) : super(LocationInitial());
 
   Future<void> loadLocationData() async {
     emit(LocationLoadInProgress());

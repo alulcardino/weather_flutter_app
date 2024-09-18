@@ -90,7 +90,7 @@ class WeatherListFormatter {
   }
 
   static String formatIcon(String icon) {
-    return '${Constants.WEATHER_IMAGES_URL}${icon}.png';
+    return '${Constants.WEATHER_IMAGES_URL}$icon.png';
   }
 
   static String formatDayOfWeek(int timestamp) {

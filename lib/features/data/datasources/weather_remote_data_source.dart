@@ -1,6 +1,5 @@
   import 'package:dio/dio.dart';
   import 'package:typed_json/typed_json.dart';
-  import 'package:weather_flutter_app/core/error/exceptions.dart';
   import 'package:weather_flutter_app/core/error/failures.dart';
   import 'package:weather_flutter_app/features/data/dto/weather_forecast_dto.dart';
   import 'package:weather_flutter_app/features/presentation/utils/constants.dart';
@@ -25,7 +24,6 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       'q': city,
     };
 
-    print('WeatherRemoteDataSourceImpl: Fetching weather forecast for city: $city with parameters: $parameters');
 
     try {
       final response = await dio.get(
@@ -34,14 +32,11 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        print('WeatherRemoteDataSourceImpl: Successfully fetched weather data for city');
         return WeatherForecastDTO.fromJson(Json(response.data));
       } else {
-        print('WeatherRemoteDataSourceImpl: Failed to fetch weather data for city with status code: ${response.statusCode}');
         throw ServerException('Failed to fetch weather data for city.');
       }
     } catch (e) {
-      print('WeatherRemoteDataSourceImpl: Exception encountered - $e');
       throw ServerException('Failed to fetch weather data for city.');
     }
   }
@@ -56,7 +51,6 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       'lon': location.longitude.toString(),
     };
 
-    print('WeatherRemoteDataSourceImpl: Fetching weather forecast for current location with parameters: $parameters');
 
     try {
       final response = await dio.get(
@@ -65,14 +59,11 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        print('WeatherRemoteDataSourceImpl: Successfully fetched weather data for current location');
         return WeatherForecastDTO.fromJson(Json(response.data));
       } else {
-        print('WeatherRemoteDataSourceImpl: Failed to fetch weather data for current location with status code: ${response.statusCode}');
         throw ServerException('Failed to fetch weather data for current location.');
       }
     } catch (e) {
-      print('WeatherRemoteDataSourceImpl: Exception encountered - $e');
       throw ServerException('Failed to fetch weather data for current location.');
     }
   }
