@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/forecast_item.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/forecast_item.dart';
 
-import '../../domain/entities/weather_forecast_entity.dart';
-import '../utils/formatter.dart';
 
 class DetailView extends StatelessWidget {
   final WeatherForecastEntity weatherForecast;
@@ -14,9 +13,7 @@ class DetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     var forecastList = weatherForecast.list;
 
-    var pressure = forecastList![0].pressure * 0.750062;
-    var humidity = forecastList[0].humidity;
-    var wind = forecastList[0].speed;
+    var forecast = forecastList![0];
 
     return Row(
       mainAxisSize: MainAxisSize.max,
@@ -24,15 +21,15 @@ class DetailView extends StatelessWidget {
       children: [
         ForecastItem(
             icon: FontAwesomeIcons.thermometerHalf,
-            value: Formatter.formatPressure(pressure),
+            value: forecast.pressure,
             units: "mm Hg"),
         ForecastItem(
             icon: FontAwesomeIcons.cloudRain,
-            value: Formatter.formatHumidity(humidity),
+            value: forecast.humidity,
             units: "%"),
         ForecastItem(
             icon: FontAwesomeIcons.wind,
-            value: Formatter.formatWind(wind),
+            value: forecast.wind,
             units: "m/s"),
       ],
     );

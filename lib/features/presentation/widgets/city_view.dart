@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
-import 'package:weather_flutter_app/features/presentatiom/utils/formatter.dart';
 
 class CityView extends StatelessWidget {
   final WeatherForecastEntity weatherForecast;
@@ -9,20 +8,15 @@ class CityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String city = weatherForecast.city.name;
-    String country = weatherForecast.city.country;
-    var formattedDate =
-        DateTime.fromMillisecondsSinceEpoch(weatherForecast.list![0].dt * 1000);
-
     return Column(
       children: [
         Text(
-          "$city, $country",
+          weatherForecast.formattedCityCountry,
           style: const TextStyle(
               fontWeight: FontWeight.bold, fontSize: 28, color: Colors.black87),
         ),
         Text(
-          Formatter.getFormattedDate(formattedDate),
+          weatherForecast.formattedDate,
           style: const TextStyle(fontSize: 15, color: Colors.black87),
         ),
       ],

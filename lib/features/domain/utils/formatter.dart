@@ -14,14 +14,14 @@ class Formatter {
   }
 
   static String formatPressure(double pressure) {
-    return "${pressure.round()} mm Hg";
+    return "${pressure.round()}";
   }
 
   static String formatHumidity(int humidity) {
-    return "$humidity%";
+    return "$humidity";
   }
 
   static String formatWind(double wind) {
-    return "${wind.toInt()} m/s";
+    return "${wind.toInt()}";
   }
 }

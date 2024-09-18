@@ -1,14 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:kiwi/kiwi.dart';
-import '../../features/data/datasources/weather_remote_data_source.dart';
-import '../features/data/repository/weather_repository_impl.dart';
-import '../features/domain/repository/weather_repository.dart';
-import '../features/domain/usecases/get_weather_forecast_by_city_use_case.dart';
-import '../features/domain/usecases/get_weather_forecast_by_location_use_case.dart';
-import '../features/presentatiom/qubit/location/location_qubit.dart';
-import '../features/presentatiom/qubit/weather/weather_qubit.dart';
-import '../features/presentatiom/utils/constants.dart';
-import '../features/presentatiom/utils/location.dart';
+import 'package:weather_flutter_app/features/data/adapters/force_double_adapter.dart';
+import 'package:weather_flutter_app/features/data/datasources/weather_remote_data_source.dart';
+import 'package:weather_flutter_app/features/data/repository/weather_repository_impl.dart';
+import 'package:weather_flutter_app/features/domain/repository/weather_repository.dart';
+import 'package:weather_flutter_app/features/domain/usecases/get_weather_forecast_by_city_use_case.dart';
+import 'package:weather_flutter_app/features/domain/usecases/get_weather_forecast_by_location_use_case.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/location/location_cubit.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/weather/weather_cubit.dart';
+import 'package:weather_flutter_app/features/presentation/utils/constants.dart';
+import 'package:weather_flutter_app/features/presentation/utils/location.dart';
+
 
 class DependencyInjection {
   static final KiwiContainer container = KiwiContainer();
@@ -46,15 +48,19 @@ class DependencyInjection {
       (c) => Location(),
     );
 
-    container.registerFactory<LocationBloc>(
-      (c) => LocationBloc(c.resolve<GetWeatherForecastByLocation>()),
+    container.registerFactory<LocationCubit>(
+      (c) => LocationCubit(c.resolve<GetWeatherForecastByLocation>()),
     );
 
-    container.registerFactory<WeatherBloc>(
-      (c) => WeatherBloc(
+    container.registerFactory<WeatherCubit>(
+      (c) => WeatherCubit(
         getWeatherByCity: c.resolve<GetWeatherForecastByCity>(),
         getWeatherByLocation: c.resolve<GetWeatherForecastByLocation>(),
       ),
+    );
+
+    container.registerFactory<ForceDoubleJsonAdapter>(
+      (c) => ForceDoubleJsonAdapter(),
     );
   }
 }

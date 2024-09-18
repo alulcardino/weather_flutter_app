@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/presentation/pages/city_page.dart';
+import 'package:weather_flutter_app/features/presentation/pages/weather_forecast_page.dart';
 
-import '../pages/city_page.dart';
-import '../pages/weather_forecast_page.dart';
-import '../../domain/entities/weather_forecast_entity.dart';
 
 class NavigationCoordinator {
   final BuildContext context;
@@ -24,8 +24,11 @@ class NavigationCoordinator {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            WeatherForecastPage(locationWeather: weatherForecast),
+        builder: (context) => WeatherForecastPage(
+          locationWeather: weatherForecast,
+          onShowOtherScreen: (forecast) {
+          },
+        ),
       ),
     );
   }

@@ -8,7 +8,7 @@ class CityPage extends StatefulWidget {
 }
 
 class _CityPageState extends State<CityPage> {
-  late String cityName;
+  final TextEditingController _cityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class _CityPageState extends State<CityPage> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: TextField(
+                controller: _cityController,
                 cursorColor: Colors.blueGrey[800],
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -27,19 +28,17 @@ class _CityPageState extends State<CityPage> {
                   filled: true,
                   fillColor: Colors.black87,
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
-                      borderSide: BorderSide.none),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
                   icon: Icon(
                     Icons.location_city,
                     color: Colors.black87,
                     size: 50.0,
                   ),
                 ),
-                onChanged: (value) {
-                  cityName = value;
-                },
               ),
             ),
             TextButton(
@@ -48,12 +47,21 @@ class _CityPageState extends State<CityPage> {
                 style: TextStyle(fontSize: 30.0),
               ),
               onPressed: () {
-                Navigator.pop(context, cityName);
+                final cityName = _cityController.text.trim();
+                if (cityName.isNotEmpty) {
+                  Navigator.pop(context, cityName);
+                }
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cityController.dispose();
+    super.dispose();
   }
 }

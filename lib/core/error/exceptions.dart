@@ -1,3 +1,16 @@
-class ServerException implements Exception {}
+abstract class Failure {
+  final String message;
+  Failure(this.message);
+}
 
-class CacheException implements Exception {}
+class ServerFailure extends Failure {
+  ServerFailure(String message) : super(message);
+}
+
+class NetworkFailure extends Failure {
+  NetworkFailure(String message, [$]) : super(message);
+}
+
+class UnknownFailure extends Failure {
+  UnknownFailure(String message) : super(message);
+}

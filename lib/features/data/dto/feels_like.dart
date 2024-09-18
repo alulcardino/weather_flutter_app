@@ -1,11 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:typed_json/typed_json.dart';
+import 'package:weather_flutter_app/features/data/adapters/force_double_adapter.dart';
 
 class FeelsLikeDTO extends Equatable {
   final double day;
   final double night;
   final double eve;
   final double morn;
+
+  static ForceDoubleJsonAdapter get _adapter =>
+      KiwiContainer().resolve<ForceDoubleJsonAdapter>();
 
   const FeelsLikeDTO({
     required this.day,
@@ -16,16 +21,11 @@ class FeelsLikeDTO extends Equatable {
 
   factory FeelsLikeDTO.fromJson(Json json) {
     return FeelsLikeDTO(
-      day: _parseToDouble(json['day']),
-      night: _parseToDouble(json['night']),
-      eve: _parseToDouble(json['eve']),
-      morn: _parseToDouble(json['morn']),
+      day: _adapter.fromJson(json['day']),
+      night: _adapter.fromJson(json['night']),
+      eve: _adapter.fromJson(json['eve']),
+      morn: _adapter.fromJson(json['morn']),
     );
-  }
-
-  static double _parseToDouble(Json json) {
-    final num value = json.numOrException;
-    return value.toDouble();
   }
 
   @override

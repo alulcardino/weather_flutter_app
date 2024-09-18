@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/features/presentatiom/pages/city_page.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/bottom_list_view.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/city_view.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/detail_view.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/temp_view.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/presentation/pages/city_page.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/weather/weather_cubit.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/weather/weather_state.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/bottom_list_view.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/city_view.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/detail_view.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/temp_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../domain/entities/weather_forecast_entity.dart';
-import '../qubit/weather/weather_event.dart';
-import '../qubit/weather/weather_qubit.dart';
-import '../qubit/weather/weather_state.dart';
 
 class WeatherForecastPage extends StatefulWidget {
   final WeatherForecastEntity locationWeather;
+  final void Function(WeatherForecastEntity)? onShowOtherScreen;
 
-  const WeatherForecastPage({super.key, required this.locationWeather});
+  const WeatherForecastPage({
+    super.key,
+    required this.locationWeather,
+    this.onShowOtherScreen,
+  });
 
   @override
   _WeatherForecastPageState createState() => _WeatherForecastPageState();
@@ -26,21 +29,20 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<WeatherBloc>(context)
-        .add(FetchWeatherByLocation(widget.locationWeather));
+    context.read<WeatherCubit>().fetchWeatherByLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: BlocBuilder<WeatherBloc, WeatherState>(
+      body: BlocBuilder<WeatherCubit, WeatherState>(
         builder: (context, state) {
-          if (state is WeatherLoading) {
+          if (state is WeatherLoadInProgress) {
             return _buildLoading();
-          } else if (state is WeatherLoaded) {
+          } else if (state is WeatherLoadSuccess) {
             return _buildWeatherContent(state.weatherForecast);
-          } else if (state is WeatherError) {
+          } else if (state is WeatherLoadFailure) {
             return _buildError(state.message);
           } else {
             return _buildCityNotFound();
@@ -62,8 +64,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
       leading: IconButton(
         icon: const Icon(Icons.my_location, color: Colors.white),
         onPressed: () {
-          BlocProvider.of<WeatherBloc>(context)
-              .add(FetchWeatherByLocation(widget.locationWeather));
+          context.read<WeatherCubit>().fetchWeatherByLocation();
         },
       ),
       actions: <Widget>[
@@ -77,8 +78,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
             if (tappedName != null) {
               setState(() {
                 _cityName = tappedName;
-                BlocProvider.of<WeatherBloc>(context)
-                    .add(FetchWeather(_cityName));
+                context.read<WeatherCubit>().fetchWeather(_cityName);
               });
             }
           },
@@ -92,6 +92,13 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   }
 
   Widget _buildWeatherContent(WeatherForecastEntity weatherForecast) {
+    // Use the callback if it is provided
+    if (widget.onShowOtherScreen != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onShowOtherScreen!(weatherForecast);
+      });
+    }
+
     return Column(
       children: <Widget>[
         const SizedBox(height: 50.0),

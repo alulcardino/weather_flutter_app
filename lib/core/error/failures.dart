@@ -1,10 +1,19 @@
-import 'package:equatable/equatable.dart';
-
-abstract class Failure extends Equatable {
-  @override
-  List<Object> get props => [];
+class AppException implements Exception {
+  final String message;
+  AppException(this.message);
 }
 
-class ServerFailure extends Failure {}
+// Исключение для серверных ошибок
+class ServerException extends AppException {
+  ServerException(String message) : super(message);
+}
 
-class CacheFailure extends Failure {}
+// Исключение для сетевых ошибок
+class NetworkException extends AppException {
+  NetworkException(String message) : super(message);
+}
+
+// Исключение для других неизвестных ошибок
+class UnknownException extends AppException {
+  UnknownException(String message) : super(message);
+}

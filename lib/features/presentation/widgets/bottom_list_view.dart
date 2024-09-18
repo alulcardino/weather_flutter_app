@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter_app/features/presentatiom/widgets/forecast_card.dart';
-import '../../domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/presentation/widgets/forecast_card.dart';
 
 class BottomListView extends StatelessWidget {
   final WeatherForecastEntity weatherForecast;

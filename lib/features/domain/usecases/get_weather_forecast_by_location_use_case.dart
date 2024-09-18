@@ -1,23 +1,22 @@
-import 'package:either_dart/either.dart';
-
-import '../../../core/error/failures.dart';
-import '../entities/weather_forecast_entity.dart';
-import '../repository/weather_repository.dart';
+import 'package:weather_flutter_app/core/error/exceptions.dart';
+import 'package:weather_flutter_app/features/domain/entities/weather_forecast_entity.dart';
+import 'package:weather_flutter_app/features/domain/repository/weather_repository.dart';
 
 class GetWeatherForecastByLocation {
   final WeatherRepository repository;
 
   GetWeatherForecastByLocation(this.repository);
 
-  Future<Either<Failure, WeatherForecastEntity>> execute() async {
+  Future<WeatherForecastEntity> call() async {
     try {
-      final result = await repository.getWeatherForecastByLocation();
-      return result.fold(
-        (failure) => Left(failure),
-        (dto) => Right(WeatherForecastEntity.fromDTO(dto)),
-      );
+      final weather = await repository.getWeatherForecastByLocation();
+      return WeatherForecastEntity.fromDTO(weather);
     } catch (e) {
-      return Left(ServerFailure());
+      if (e is Failure) {
+        rethrow;
+      } else {
+        throw UnknownFailure('An unknown error occurred');
+      }
     }
   }
 }

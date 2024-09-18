@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:weather_flutter_app/features/data/dto/coord_dto.dart';
 
-import '../../data/dto/coord_dto.dart';
 
 class CoordEntity extends Equatable {
   final double? lon;

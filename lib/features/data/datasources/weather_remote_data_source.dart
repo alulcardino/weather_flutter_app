@@ -1,11 +1,12 @@
-import 'package:dio/dio.dart';
-import 'package:typed_json/typed_json.dart';
-import 'package:weather_flutter_app/features/data/dto/weather_forecast_dto.dart';
-import '../../../core/error/exceptions.dart';
-import '../../presentatiom/utils/constants.dart';
-import '../../presentatiom/utils/location.dart';
+  import 'package:dio/dio.dart';
+  import 'package:typed_json/typed_json.dart';
+  import 'package:weather_flutter_app/core/error/exceptions.dart';
+  import 'package:weather_flutter_app/core/error/failures.dart';
+  import 'package:weather_flutter_app/features/data/dto/weather_forecast_dto.dart';
+  import 'package:weather_flutter_app/features/presentation/utils/constants.dart';
+  import 'package:weather_flutter_app/features/presentation/utils/location.dart';
 
-abstract class WeatherRemoteDataSource {
+ abstract class WeatherRemoteDataSource {
   Future<WeatherForecastDTO> getWeatherForecastByCity(String city);
   Future<WeatherForecastDTO> getWeatherForecastByLocation();
 }
@@ -24,21 +25,30 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       'q': city,
     };
 
-    final response = await dio.get(
-      Constants.WEATHER_FORECAST_PATH,
-      queryParameters: parameters,
-    );
+    print('WeatherRemoteDataSourceImpl: Fetching weather forecast for city: $city with parameters: $parameters');
 
-    if (response.statusCode == 200) {
-      return WeatherForecastDTO.fromJson(Json(response.data));
-    } else {
-      throw ServerException();
+    try {
+      final response = await dio.get(
+        Constants.WEATHER_FORECAST_PATH,
+        queryParameters: parameters,
+      );
+
+      if (response.statusCode == 200) {
+        print('WeatherRemoteDataSourceImpl: Successfully fetched weather data for city');
+        return WeatherForecastDTO.fromJson(Json(response.data));
+      } else {
+        print('WeatherRemoteDataSourceImpl: Failed to fetch weather data for city with status code: ${response.statusCode}');
+        throw ServerException('Failed to fetch weather data for city.');
+      }
+    } catch (e) {
+      print('WeatherRemoteDataSourceImpl: Exception encountered - $e');
+      throw ServerException('Failed to fetch weather data for city.');
     }
   }
 
   @override
   Future<WeatherForecastDTO> getWeatherForecastByLocation() async {
-    await location.getCurrentLocation(); // Use injected Location
+    await location.getCurrentLocation();
     final parameters = {
       'appid': Constants.WEATHER_APP_ID,
       'units': 'metric',
@@ -46,15 +56,24 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
       'lon': location.longitude.toString(),
     };
 
-    final response = await dio.get(
-      Constants.WEATHER_FORECAST_PATH,
-      queryParameters: parameters,
-    );
+    print('WeatherRemoteDataSourceImpl: Fetching weather forecast for current location with parameters: $parameters');
 
-    if (response.statusCode == 200) {
-      return WeatherForecastDTO.fromJson(Json(response.data));
-    } else {
-      throw ServerException();
+    try {
+      final response = await dio.get(
+        Constants.WEATHER_FORECAST_PATH,
+        queryParameters: parameters,
+      );
+
+      if (response.statusCode == 200) {
+        print('WeatherRemoteDataSourceImpl: Successfully fetched weather data for current location');
+        return WeatherForecastDTO.fromJson(Json(response.data));
+      } else {
+        print('WeatherRemoteDataSourceImpl: Failed to fetch weather data for current location with status code: ${response.statusCode}');
+        throw ServerException('Failed to fetch weather data for current location.');
+      }
+    } catch (e) {
+      print('WeatherRemoteDataSourceImpl: Exception encountered - $e');
+      throw ServerException('Failed to fetch weather data for current location.');
     }
   }
 }

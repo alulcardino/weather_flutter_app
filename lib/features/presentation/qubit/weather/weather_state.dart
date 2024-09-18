@@ -3,27 +3,25 @@ import 'package:weather_flutter_app/features/domain/entities/weather_forecast_en
 
 abstract class WeatherState extends Equatable {
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class WeatherInitial extends WeatherState {}
 
-class WeatherLoading extends WeatherState {}
+class WeatherLoadInProgress extends WeatherState {}
 
-class WeatherLoaded extends WeatherState {
+class WeatherLoadSuccess extends WeatherState {
   final WeatherForecastEntity weatherForecast;
-
-  WeatherLoaded(this.weatherForecast);
+  WeatherLoadSuccess(this.weatherForecast);
 
   @override
-  List<Object?> get props => [weatherForecast];
+  List<Object> get props => [weatherForecast];
 }
 
-class WeatherError extends WeatherState {
+class WeatherLoadFailure extends WeatherState {
   final String message;
-
-  WeatherError(this.message);
+  WeatherLoadFailure(this.message);
 
   @override
-  List<Object?> get props => [message];
+  List<Object> get props => [message];
 }

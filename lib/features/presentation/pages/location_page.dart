@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../navigation/naviagtion_coordinator.dart';
-import '../qubit/location/location_event.dart';
-import '../qubit/location/location_qubit.dart';
-import '../qubit/location/location_state.dart';
+import 'package:weather_flutter_app/features/presentation/navigation/naviagtion_coordinator.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/location/location_cubit.dart';
+import 'package:weather_flutter_app/features/presentation/qubit/location/location_state.dart';
 
 class LocationPage extends StatefulWidget {
   const LocationPage({super.key});
@@ -22,24 +20,24 @@ class _LocationPageState extends State<LocationPage> {
     super.initState();
     _navigationCoordinator = NavigationCoordinator(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LocationBloc>().add(LoadLocationData());
+      context.read<LocationCubit>().loadLocationData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<LocationBloc, LocationState>(
+      body: BlocBuilder<LocationCubit, LocationState>(
         builder: (context, state) {
-          if (state is LocationLoading) {
+          if (state is LocationLoadInProgress) {
             return _buildLoading();
-          } else if (state is LocationLoaded) {
+          } else if (state is LocationLoadSuccess) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _navigationCoordinator
                   .navigateToWeatherForecastScreen(state.weatherForecast);
             });
             return _buildEmpty();
-          } else if (state is LocationError) {
+          } else if (state is LocationLoadingFailure) {
             return _buildError(state.message);
           }
           return _buildNoData();

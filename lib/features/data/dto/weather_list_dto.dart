@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:typed_json/typed_json.dart';
+import 'package:weather_flutter_app/features/data/adapters/force_double_adapter.dart';
 import 'package:weather_flutter_app/features/data/dto/feels_like.dart';
 import 'package:weather_flutter_app/features/data/dto/temp_dto.dart';
 
@@ -17,6 +19,9 @@ class WeatherListDTO extends Equatable {
   final double speed;
   final int deg;
   final int clouds;
+
+  static ForceDoubleJsonAdapter get _adapter =>
+      KiwiContainer().resolve<ForceDoubleJsonAdapter>();
 
   const WeatherListDTO({
     required this.dt,
@@ -41,10 +46,10 @@ class WeatherListDTO extends Equatable {
       feelsLike: FeelsLikeDTO.fromJson(json['feels_like']),
       pressure: json['pressure'].intOrException,
       humidity: json['humidity'].intOrException,
-      weather: (json['weather'].list)
-          .map((item) => WeatherDTO.fromJson(item))
-          .toList(),
-      speed: _parseToDouble(json['speed']),
+      weather: json['weather']
+              .toObjectList<WeatherDTO>((item) => WeatherDTO.fromJson(item)) ??
+          [],
+      speed: _adapter.fromJson(json['speed']),
       deg: json['deg'].intOrException,
       clouds: json['clouds'].intOrException,
     );
@@ -64,9 +69,4 @@ class WeatherListDTO extends Equatable {
         deg,
         clouds
       ];
-
-  static double _parseToDouble(Json json) {
-    final num value = json.numOrException;
-    return value.toDouble();
-  }
 }

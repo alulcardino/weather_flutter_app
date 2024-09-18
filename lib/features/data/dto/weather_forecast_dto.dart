@@ -20,23 +20,14 @@ class WeatherForecastDTO extends Equatable {
 
   factory WeatherForecastDTO.fromJson(Json json) {
     return WeatherForecastDTO(
-      city: CityDTO.fromJson(json['city']),
-      cod: json['cod'].stringOrException,
-      message: json['message'].doubleOrException,
-      cnt: json['cnt'].intOrException,
-      list: json['list']
-          .list
-          .map((item) => WeatherListDTO.fromJson(item))
-          .toList(),
-    );
+        city: CityDTO.fromJson(json['city']),
+        cod: json['cod'].stringOrException,
+        message: json['message'].doubleOrException,
+        cnt: json['cnt'].intOrException,
+        list: json['list'].toObjectList<WeatherListDTO>(
+            (item) => WeatherListDTO.fromJson(item)));
   }
 
   @override
   List<Object?> get props => [city, cod, message, cnt, list];
 }
-
-
-// json['list']
-//           .list
-//           .map((item) => WeatherListDTO.fromJson(item))
-//           .toList(),

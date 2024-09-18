@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:weather_flutter_app/features/data/dto/city_dto.dart';
 import 'package:weather_flutter_app/features/domain/entities/coord_entity.dart';
 
-import '../../data/dto/city_dto.dart';
 
 class CityEntity extends Equatable {
   final int id;

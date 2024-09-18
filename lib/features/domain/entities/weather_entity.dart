@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:weather_flutter_app/features/data/dto/weather_dto.dart';
 
-import '../../data/dto/weather_dto.dart';
 
 class WeatherEntity extends Equatable {
   final int id;
